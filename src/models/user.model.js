@@ -1,4 +1,6 @@
 const { DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
+
 const sequelize = require("../sequelize");
 
 const User = sequelize.define(
@@ -45,5 +47,14 @@ const User = sequelize.define(
         updatedAt: "updated_at",
     }
 );
+
+User.addHook("beforeValidate", (user) => {
+    user.full_name = user.first_name + " " + user.last_name;
+});
+
+User.addHook("beforeCreate", async (user) => {
+    const hashedPassword = await bcrypt.hash(user.password, 8);
+    user.password = hashedPassword;
+});
 
 module.exports = User;

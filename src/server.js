@@ -6,6 +6,8 @@ const sequelize = require("./sequelize");
 
 const app = express();
 
+app.use(express.json());
+
 // Import routing
 routes(app);
 
