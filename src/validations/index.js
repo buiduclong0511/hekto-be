@@ -1,6 +1,7 @@
-const { registerSchema, loginSchema } = require("./auth.validation");
+const authValidation = require("./auth.validation");
+const categoryValidation = require("./category.validation");
 
 module.exports = {
-    registerSchema,
-    loginSchema,
+    authValidation,
+    categoryValidation,
 };

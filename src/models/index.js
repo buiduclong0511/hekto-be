@@ -1,7 +1,9 @@
-const User = require("./user.model");
 const BlacklistToken = require("./blacklistToken.model");
+const Category = require("./category.model");
+const User = require("./user.model");
 
 module.exports = {
-    User,
     BlacklistToken,
+    Category,
+    User,
 };
