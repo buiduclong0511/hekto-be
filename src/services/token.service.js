@@ -35,9 +35,18 @@ const checkIsBlacklist = async (jti) => {
     return !!blacklistToken;
 };
 
+const saveToBlacklist = async (payload) => {
+    await BlacklistToken.create({
+        id: payload.jti,
+        exp: payload.exp,
+        type: payload.type,
+    });
+};
+
 module.exports = {
     createAccessToken,
     createRefreshToken,
     decodeToken,
     checkIsBlacklist,
+    saveToBlacklist,
 };

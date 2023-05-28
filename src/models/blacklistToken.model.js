@@ -11,6 +11,10 @@ const BlacklistToken = sequelize.define(
             unique: true,
             allowNull: false,
         },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         exp: {
             type: DataTypes.BIGINT,
             allowNull: false,

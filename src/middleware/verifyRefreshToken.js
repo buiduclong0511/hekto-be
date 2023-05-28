@@ -20,6 +20,8 @@ const verifyRefreshToken = async (req, res, next) => {
             const user = await userService.getUserById(payload.sub);
             req.user = user;
 
+            await tokenService.saveToBlacklist(payload);
+
             return next();
         } catch (err) {
             if (err instanceof TokenExpiredError) {

@@ -16,6 +16,10 @@ module.exports = {
                 unique: true,
                 allowNull: false,
             },
+            type: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
             exp: {
                 type: Sequelize.BIGINT,
                 allowNull: false,
