@@ -1,23 +1,11 @@
-const { registerSchema, loginSchema } = require("../validations");
-const { userService, authService } = require("../services");
+const { userService, authService, tokenService } = require("../services");
+const { resError, catchAsync } = require("../utils");
 
-const register = async (req, res) => {
+const register = catchAsync(async (req, res) => {
     const body = req.body;
 
-    try {
-        await registerSchema.validateAsync(body);
-    } catch (err) {
-        return res.status(422).json({
-            code: 422,
-            message: err.details[0].message,
-        });
-    }
-
     if (await userService.checkExistsEmail(body.email.trim())) {
-        return res.status(409).json({
-            code: 409,
-            message: "Email was existed.",
-        });
+        return res.status(409).json(resError(409, "Email was existed."));
     }
 
     const user = await userService.createUser({
@@ -27,8 +15,8 @@ const register = async (req, res) => {
         password: body.password.trim(),
     });
 
-    const accessToken = authService.createAccessToken(user.id);
-    const refreshToken = authService.createRefreshToken(user.id);
+    const accessToken = tokenService.createAccessToken(user.id);
+    const refreshToken = tokenService.createRefreshToken(user.id);
 
     return res.json({
         data: {
@@ -36,38 +24,23 @@ const register = async (req, res) => {
             refresh_token: refreshToken,
         },
     });
-};
+});
 
-const login = async (req, res) => {
+const login = catchAsync(async (req, res) => {
     const body = req.body;
-
-    try {
-        await loginSchema.validateAsync(body);
-    } catch (err) {
-        return res.status(422).json({
-            code: 422,
-            message: err.details[0].message,
-        });
-    }
 
     const user = await userService.getUserByEmail(body.email);
     if (!user) {
-        return res.status(401).json({
-            code: 401,
-            message: "Unauthenticated.",
-        });
+        return res.status(401).json(resError(401, "Unauthenticated."));
     }
 
     const isValidPassword = await authService.comparePassword(body.password, user.password);
     if (!isValidPassword) {
-        return res.status(401).json({
-            code: 401,
-            message: "Unauthenticated.",
-        });
+        return res.status(401).json(resError(401, "Unauthenticated."));
     }
 
-    const accessToken = authService.createAccessToken(user.id);
-    const refreshToken = authService.createRefreshToken(user.id);
+    const accessToken = tokenService.createAccessToken(user.id);
+    const refreshToken = tokenService.createRefreshToken(user.id);
 
     return res.json({
         data: {
@@ -75,16 +48,40 @@ const login = async (req, res) => {
             refresh_token: refreshToken,
         },
     });
-};
+});
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = catchAsync(async (req, res) => {
+    const user = req.user;
+
+    const data = {
+        id: user.id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        full_name: user.full_name,
+    };
+
     return res.json({
-        data: req.user,
+        data,
     });
-};
+});
+
+const refreshToken = catchAsync(async (req, res) => {
+    const user = req.user;
+    const accessToken = tokenService.createAccessToken(user.id);
+    const refreshToken = tokenService.createRefreshToken(user.id);
+
+    return res.json({
+        data: {
+            access_token: accessToken,
+            refresh_token: refreshToken,
+        },
+    });
+});
 
 module.exports = {
     register,
     login,
     getCurrentUser,
+    refreshToken,
 };

@@ -3,6 +3,7 @@ const express = require("express");
 const configs = require("./configs");
 const routes = require("./routes");
 const sequelize = require("./sequelize");
+const { handleError } = require("./middleware");
 
 const app = express();
 
@@ -10,6 +11,9 @@ app.use(express.json());
 
 // Import routing
 routes(app);
+
+// Handle error
+app.use(handleError);
 
 sequelize
     .authenticate()

@@ -1,9 +1,10 @@
 const { TokenExpiredError } = require("jsonwebtoken");
-const { tokenService, userService } = require("../services");
+
 const { ApiError } = require("../utils");
+const { tokenService, userService } = require("../services");
 const { TOKEN_TYPES } = require("../constants");
 
-const verifyToken = async (req, res, next) => {
+const verifyRefreshToken = async (req, res, next) => {
     const bearerToken = req.get("Authorization");
 
     if (bearerToken) {
@@ -11,9 +12,11 @@ const verifyToken = async (req, res, next) => {
 
         try {
             const payload = tokenService.decodeToken(token);
-            if (payload.type !== TOKEN_TYPES.ACCESS) {
+
+            if (payload.type !== TOKEN_TYPES.REFRESH || (await tokenService.checkIsBlacklist(payload.jti))) {
                 return next(new ApiError(401, "Unauthenticated."));
             }
+
             const user = await userService.getUserById(payload.sub);
             req.user = user;
 
@@ -28,4 +31,4 @@ const verifyToken = async (req, res, next) => {
     return next(new ApiError(401, "Unauthenticated."));
 };
 
-module.exports = verifyToken;
+module.exports = verifyRefreshToken;
