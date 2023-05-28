@@ -10,5 +10,6 @@ route.post("/register", validate(registerSchema), authController.register);
 route.post("/login", validate(loginSchema), authController.login);
 route.get("/current-user", verifyToken, authController.getCurrentUser);
 route.get("/refresh-token", verifyRefreshToken, authController.refreshToken);
+route.get("/logout", verifyRefreshToken, authController.logout);
 
 module.exports = route;

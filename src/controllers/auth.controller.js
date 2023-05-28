@@ -79,9 +79,17 @@ const refreshToken = catchAsync(async (req, res) => {
     });
 });
 
+const logout = catchAsync(async (req, res) => {
+    return res.json({
+        data: true,
+        message: "Logged out.",
+    });
+});
+
 module.exports = {
     register,
     login,
     getCurrentUser,
     refreshToken,
+    logout,
 };
