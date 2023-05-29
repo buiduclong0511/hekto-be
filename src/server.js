@@ -15,6 +15,9 @@ routes(app);
 // Handle error
 app.use(handleError);
 
+// static file
+app.use(express.static("public"));
+
 sequelize
     .authenticate()
     .then(() => {
