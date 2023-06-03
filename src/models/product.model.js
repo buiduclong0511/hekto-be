@@ -12,7 +12,7 @@ const Product = sequelize.define(
             allowNull: false,
             autoIncrement: true,
         },
-        category_id: {
+        categoryId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -34,25 +34,23 @@ const Product = sequelize.define(
             allowNull: false,
             defaultValue: 0,
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
         },
     },
     {
-        tableName: "products",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        timestamps: true,
     }
 );
 
 Category.hasMany(Product, {
-    foreignKey: "category_id",
+    foreignKey: "categoryId",
 });
 Product.belongsTo(Category, {
-    foreignKey: "category_id",
+    foreignKey: "categoryId",
 });
 
 module.exports = Product;

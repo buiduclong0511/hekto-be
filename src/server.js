@@ -4,6 +4,7 @@ const configs = require("./configs");
 const routes = require("./routes");
 const sequelize = require("./sequelize");
 const { handleError } = require("./middleware");
+const { User, BlacklistToken, Category, Product, Image } = require("./models");
 
 const app = express();
 

@@ -19,17 +19,15 @@ const BlacklistToken = sequelize.define(
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
         },
     },
     {
-        tableName: "blacklist_tokens",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        timestamps: true,
     }
 );
 

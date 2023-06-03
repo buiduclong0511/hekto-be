@@ -9,7 +9,7 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.createTable("categories", {
+        await queryInterface.createTable("Categories", {
             id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
@@ -24,10 +24,10 @@ module.exports = {
                 type: Sequelize.TEXT,
                 allowNull: false,
             },
-            created_at: {
+            createdAt: {
                 type: Sequelize.DATE,
             },
-            updated_at: {
+            updatedAt: {
                 type: Sequelize.DATE,
             },
         });
@@ -40,6 +40,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable("categories");
+        await queryInterface.dropTable("Categories");
     },
 };

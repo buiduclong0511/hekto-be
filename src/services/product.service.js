@@ -3,14 +3,14 @@ const { Product, Image } = require("../models");
 const { ApiError } = require("../utils");
 
 const createProduct = async (data) => {
-    if (!(await categoryService.getCategoryById(data.category_id))) {
+    if (!(await categoryService.getCategoryById(data.categoryId))) {
         throw new ApiError(422, "Category id is invalid.");
     }
 
     return await Product.create({
         name: data.name.trim(),
         description: data.description.trim(),
-        category_id: data.category_id,
+        categoryId: data.categoryId,
         price: data.price,
     });
 };

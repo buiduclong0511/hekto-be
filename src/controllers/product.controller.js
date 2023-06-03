@@ -17,9 +17,9 @@ const uploadImage = catchAsync(async (req, res) => {
     const path = req.file.path.replace("public/", "");
 
     const image = await productService.uploadImage({
-        product_id: id,
+        productId: id,
         path,
-        is_thumbnail: req.body.is_thumbnail,
+        isThumbnail: req.body.isThumbnail,
     });
 
     return res.json({

@@ -1,5 +1,5 @@
 const { userService, authService, tokenService } = require("../services");
-const { resError, catchAsync } = require("../utils");
+const { resError, catchAsync, ApiError } = require("../utils");
 
 const register = catchAsync(async (req, res) => {
     const body = req.body;
@@ -10,8 +10,8 @@ const register = catchAsync(async (req, res) => {
 
     const user = await userService.createUser({
         email: body.email.trim(),
-        first_name: body.first_name.trim(),
-        last_name: body.last_name.trim(),
+        firstName: body.firstName.trim(),
+        lastName: body.lastName.trim(),
         password: body.password.trim(),
     });
 
@@ -20,8 +20,8 @@ const register = catchAsync(async (req, res) => {
 
     return res.json({
         data: {
-            access_token: accessToken,
-            refresh_token: refreshToken,
+            accessToken,
+            refreshToken,
         },
     });
 });
@@ -31,12 +31,12 @@ const login = catchAsync(async (req, res) => {
 
     const user = await userService.getUserByEmail(body.email);
     if (!user) {
-        return res.status(401).json(resError(401, "Unauthenticated."));
+        throw new ApiError(401, "Unauthenticated.");
     }
 
     const isValidPassword = await authService.comparePassword(body.password, user.password);
     if (!isValidPassword) {
-        return res.status(401).json(resError(401, "Unauthenticated."));
+        throw new ApiError(401, "Unauthenticated.");
     }
 
     const accessToken = tokenService.createAccessToken(user.id);
@@ -44,8 +44,8 @@ const login = catchAsync(async (req, res) => {
 
     return res.json({
         data: {
-            access_token: accessToken,
-            refresh_token: refreshToken,
+            accessToken,
+            refreshToken,
         },
     });
 });
@@ -56,9 +56,11 @@ const getCurrentUser = catchAsync(async (req, res) => {
     const data = {
         id: user.id,
         email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        full_name: user.full_name,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        fullName: user.fullName,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
     };
 
     return res.json({
@@ -73,8 +75,8 @@ const refreshToken = catchAsync(async (req, res) => {
 
     return res.json({
         data: {
-            access_token: accessToken,
-            refresh_token: refreshToken,
+            accessToken,
+            refreshToken,
         },
     });
 });

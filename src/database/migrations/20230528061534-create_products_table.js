@@ -9,14 +9,14 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.createTable("products", {
+        await queryInterface.createTable("Products", {
             id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 allowNull: false,
                 autoIncrement: true,
             },
-            category_id: {
+            categoryId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
@@ -38,10 +38,10 @@ module.exports = {
                 allowNull: false,
                 defaultValue: 0,
             },
-            created_at: {
+            createdAt: {
                 type: Sequelize.DATE,
             },
-            updated_at: {
+            updatedAt: {
                 type: Sequelize.DATE,
             },
         });
@@ -54,6 +54,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable("products");
+        await queryInterface.dropTable("Products");
     },
 };

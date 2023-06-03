@@ -12,7 +12,7 @@ const Image = sequelize.define(
             allowNull: false,
             autoIncrement: true,
         },
-        product_id: {
+        productId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -25,31 +25,29 @@ const Image = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        is_thumbnail: {
+        isThumbnail: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
         },
     },
     {
-        tableName: "images",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        timestamps: true,
     }
 );
 
 Product.hasMany(Image, {
-    foreignKey: "product_id",
+    foreignKey: "productId",
     as: "images",
 });
 Image.belongsTo(Product, {
-    foreignKey: "product_id",
+    foreignKey: "productId",
 });
 
 module.exports = Image;

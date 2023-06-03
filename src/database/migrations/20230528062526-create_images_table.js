@@ -9,14 +9,14 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.createTable("images", {
+        await queryInterface.createTable("Images", {
             id: {
                 type: Sequelize.INTEGER,
                 primaryKey: true,
                 allowNull: false,
                 autoIncrement: true,
             },
-            product_id: {
+            productId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
@@ -29,15 +29,15 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            is_thumbnail: {
+            isThumbnail: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue: false,
             },
-            created_at: {
+            createdAt: {
                 type: Sequelize.DATE,
             },
-            updated_at: {
+            updatedAt: {
                 type: Sequelize.DATE,
             },
         });
@@ -50,6 +50,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable("images");
+        await queryInterface.dropTable("Images");
     },
 };

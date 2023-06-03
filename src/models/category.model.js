@@ -19,17 +19,15 @@ const Category = sequelize.define(
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
         },
     },
     {
-        tableName: "categories",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        timestamps: true,
     }
 );
 

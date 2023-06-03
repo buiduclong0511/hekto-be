@@ -9,7 +9,7 @@ module.exports = {
          * Example:
          * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
          */
-        await queryInterface.createTable("blacklist_tokens", {
+        await queryInterface.createTable("BlacklistTokens", {
             id: {
                 type: Sequelize.STRING,
                 primaryKey: true,
@@ -24,10 +24,10 @@ module.exports = {
                 type: Sequelize.BIGINT,
                 allowNull: false,
             },
-            created_at: {
+            createdAt: {
                 type: Sequelize.DATE,
             },
-            updated_at: {
+            updatedAt: {
                 type: Sequelize.DATE,
             },
         });
@@ -40,6 +40,6 @@ module.exports = {
          * Example:
          * await queryInterface.dropTable('users');
          */
-        await queryInterface.dropTable("blacklist_tokens");
+        await queryInterface.dropTable("BlacklistTokens");
     },
 };

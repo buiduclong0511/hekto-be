@@ -4,6 +4,7 @@ const db = {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     dialect: process.env.DB_DIALECT,
+    timezone: process.env.DB_TIMEZONE,
 };
 
 module.exports = db;

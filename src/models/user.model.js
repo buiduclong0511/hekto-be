@@ -22,34 +22,32 @@ const User = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        first_name: {
+        firstName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        last_name: {
+        lastName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        full_name: {
+        fullName: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        created_at: {
+        createdAt: {
             type: DataTypes.DATE,
         },
-        updated_at: {
+        updatedAt: {
             type: DataTypes.DATE,
         },
     },
     {
-        tableName: "users",
-        createdAt: "created_at",
-        updatedAt: "updated_at",
+        timestamps: true,
     }
 );
 
 User.addHook("beforeValidate", (user) => {
-    user.full_name = user.first_name + " " + user.last_name;
+    user.fullName = user.firstName + " " + user.lastName;
 });
 
 User.addHook("beforeCreate", async (user) => {

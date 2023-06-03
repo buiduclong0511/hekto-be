@@ -18,6 +18,10 @@ const verifyRefreshToken = async (req, res, next) => {
             }
 
             const user = await userService.getUserById(payload.sub);
+
+            if (!user) {
+                return next(new ApiError(401, "Unauthenticated."));
+            }
             req.user = user;
 
             await tokenService.saveToBlacklist(payload);

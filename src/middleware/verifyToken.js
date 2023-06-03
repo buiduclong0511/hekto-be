@@ -15,6 +15,10 @@ const verifyToken = async (req, res, next) => {
                 return next(new ApiError(401, "Unauthenticated."));
             }
             const user = await userService.getUserById(payload.sub);
+
+            if (!user) {
+                return next(new ApiError(401, "Unauthenticated."));
+            }
             req.user = user;
 
             return next();
