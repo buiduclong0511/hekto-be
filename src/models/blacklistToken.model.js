@@ -1,33 +1,17 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 
 const sequelize = require("../sequelize");
 
-const BlacklistToken = sequelize.define(
-    "BlacklistToken",
+class BlacklistToken extends Model {}
+
+BlacklistToken.init(
     {
-        id: {
-            type: DataTypes.STRING,
-            primaryKey: true,
-            unique: true,
-            allowNull: false,
-        },
-        type: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        exp: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-        },
+        type: DataTypes.STRING,
+        exp: DataTypes.BIGINT,
     },
     {
         timestamps: true,
+        sequelize,
     }
 );
 

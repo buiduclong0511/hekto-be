@@ -1,44 +1,26 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 
 const sequelize = require("../sequelize");
 const Product = require("./product.model");
+const configs = require("../configs");
 
-const Image = sequelize.define(
-    "Image",
+class Image extends Model {}
+
+Image.init(
     {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            allowNull: false,
-            autoIncrement: true,
-        },
-        productId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Product,
-                key: "id",
+        productId: DataTypes.INTEGER,
+        path: DataTypes.STRING,
+        isThumbnail: DataTypes.BOOLEAN,
+        url: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                return this.path ? `http://localhost:${configs.app.port}${this.path}` : null;
             },
-            onDelete: "CASCADE",
-        },
-        path: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        isThumbnail: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
         },
     },
     {
         timestamps: true,
+        sequelize,
     }
 );
 
@@ -48,6 +30,7 @@ Product.hasMany(Image, {
 });
 Image.belongsTo(Product, {
     foreignKey: "productId",
+    as: "product",
 });
 
 module.exports = Image;

@@ -3,10 +3,10 @@ const { ApiError } = require("../utils");
 const validate = (schema) => {
     return async (req, res, next) => {
         const body = req.body ?? {};
-        const params = req.params ?? {};
+        const query = req.query ?? {};
         const values = {
             ...body,
-            ...params,
+            ...query,
         };
 
         try {

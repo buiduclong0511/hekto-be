@@ -1,56 +1,39 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
+const sequelizePaginate = require("sequelize-paginate");
 
 const sequelize = require("../sequelize");
 const Category = require("./category.model");
+const User = require("./user.model");
 
-const Product = sequelize.define(
-    "Product",
+class Product extends Model {}
+
+Product.init(
     {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            allowNull: false,
-            autoIncrement: true,
-        },
-        categoryId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Category,
-                key: "id",
-            },
-            onDelete: "CASCADE",
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        price: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-        },
+        categoryId: DataTypes.INTEGER,
+        name: DataTypes.STRING,
+        description: DataTypes.TEXT,
+        price: DataTypes.INTEGER,
     },
     {
         timestamps: true,
+        sequelize,
     }
 );
 
+sequelizePaginate.paginate(Product);
+
 Category.hasMany(Product, {
     foreignKey: "categoryId",
+    as: "products",
 });
+
 Product.belongsTo(Category, {
     foreignKey: "categoryId",
+    as: "category",
 });
+
+Product.belongsToMany(User, { through: "ProductUser", as: "likedUsers" });
+
+User.belongsToMany(Product, { through: "ProductUser", as: "likedProducts" });
 
 module.exports = Product;

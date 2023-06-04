@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "node src/server.js",
         "dev": "nodemon src/server.js",
-        "generate:migration": "npx sequelize-cli migration:generate --name $1",
+        "generate:migration": "npx sequelize-cli migration:generate --name",
         "migrate": "npx sequelize-cli db:migrate",
         "migrate:rollback": "npx sequelize-cli db:migrate:undo"
     },
@@ -22,6 +22,7 @@
         "multer": "^1.4.5-lts.1",
         "mysql2": "^3.3.3",
         "sequelize": "^6.31.1",
+        "sequelize-paginate": "^1.1.6",
         "uuid": "^9.0.0"
     },
     "devDependencies": {

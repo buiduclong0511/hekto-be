@@ -1,31 +1,20 @@
-const categoryService = require("./category.service");
+const { Op, literal } = require("sequelize");
+
 const { Product, Image } = require("../models");
 const { ApiError } = require("../utils");
-
-const createProduct = async (data) => {
-    if (!(await categoryService.getCategoryById(data.categoryId))) {
-        throw new ApiError(422, "Category id is invalid.");
-    }
-
-    return await Product.create({
-        name: data.name.trim(),
-        description: data.description.trim(),
-        categoryId: data.categoryId,
-        price: data.price,
-    });
-};
-
-const uploadImage = async (data) => {
-    return await Image.create(data);
-};
 
 const getProductById = async (id) => {
     const product = await Product.findOne({
         where: { id },
-        include: {
-            model: Image,
-            as: "images",
+        attributes: {
+            include: [[literal(`(SELECT COUNT(*) FROM ProductUser WHERE productId = product.id)`), "likedUsersCount"]],
         },
+        include: [
+            {
+                model: Image,
+                as: "images",
+            },
+        ],
     });
 
     if (!product) {
@@ -35,8 +24,32 @@ const getProductById = async (id) => {
     return product;
 };
 
+const paginate = async ({ limit, page, search }) => {
+    const data = await Product.paginate({
+        page: page || 1,
+        paginate: limit || 10,
+        where: {
+            name: {
+                [Op.like]: `%${(search || "").trim()}%`,
+            },
+        },
+        include: {
+            model: Image,
+            as: "images",
+        },
+    });
+
+    return data;
+};
+
+const like = async (productId, user) => {
+    const product = await getProductById(productId);
+
+    await user.addProduct(product);
+};
+
 module.exports = {
-    createProduct,
-    uploadImage,
     getProductById,
+    paginate,
+    like,
 };

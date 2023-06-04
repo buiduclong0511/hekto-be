@@ -1,48 +1,21 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, Model } = require("sequelize");
 const bcrypt = require("bcrypt");
 
 const sequelize = require("../sequelize");
 
-const User = sequelize.define(
-    "User",
+class User extends Model {}
+
+User.init(
     {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            unique: true,
-            autoIncrement: true,
-            allowNull: false,
-        },
-        email: {
-            type: DataTypes.STRING,
-            unique: true,
-            allowNull: false,
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        firstName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        lastName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        fullName: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        createdAt: {
-            type: DataTypes.DATE,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-        },
+        email: DataTypes.STRING,
+        password: DataTypes.STRING,
+        firstName: DataTypes.STRING,
+        lastName: DataTypes.STRING,
+        fullName: DataTypes.STRING,
     },
     {
         timestamps: true,
+        sequelize,
     }
 );
 

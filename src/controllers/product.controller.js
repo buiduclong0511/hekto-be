@@ -1,33 +1,6 @@
 const { productService } = require("../services");
 const { catchAsync } = require("../utils");
 
-const store = catchAsync(async (req, res) => {
-    const body = req.body;
-
-    const product = await productService.createProduct(body);
-
-    return res.json({
-        data: product,
-        message: "Product was created.",
-    });
-});
-
-const uploadImage = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const path = req.file.path.replace("public/", "");
-
-    const image = await productService.uploadImage({
-        productId: id,
-        path,
-        isThumbnail: req.body.isThumbnail,
-    });
-
-    return res.json({
-        data: image,
-        message: "Image was created.",
-    });
-});
-
 const show = catchAsync(async (req, res) => {
     const { id } = req.params;
 
@@ -38,8 +11,32 @@ const show = catchAsync(async (req, res) => {
     });
 });
 
+const index = catchAsync(async (req, res) => {
+    const data = await productService.paginate({
+        limit: Number(req.query.limit),
+        page: Number(req.query.page),
+        search: req.query.search,
+    });
+
+    return res.json({
+        data: data.docs,
+        pages: data.pages,
+        total: data.total,
+    });
+});
+
+const like = catchAsync(async (req, res) => {
+    const { id } = req.params;
+
+    await productService.like(id, req.user);
+
+    return res.json({
+        data: true,
+    });
+});
+
 module.exports = {
-    store,
-    uploadImage,
     show,
+    index,
+    like,
 };
