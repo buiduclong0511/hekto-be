@@ -1,11 +1,11 @@
 const { userService, authService, tokenService } = require("../services");
-const { resError, catchAsync, ApiError } = require("../utils");
+const { catchAsync, ApiError } = require("../utils");
 
 const register = catchAsync(async (req, res) => {
     const body = req.body;
 
     if (await userService.checkExistsEmail(body.email.trim())) {
-        return res.status(409).json(resError(409, "Email was existed."));
+        throw new ApiError(409, "Email was existed.");
     }
 
     const user = await userService.createUser({
