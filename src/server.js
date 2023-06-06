@@ -1,12 +1,18 @@
 const express = require("express");
+const cors = require("cors");
 
 const configs = require("./configs");
 const routes = require("./routes");
 const sequelize = require("./sequelize");
 const { handleError } = require("./middleware");
-const { User, BlacklistToken, Category, Product, Image } = require("./models");
 
 const app = express();
+
+app.use(
+    cors({
+        origin: ["http://localhost:5173"],
+    })
+);
 
 app.use(express.json());
 
