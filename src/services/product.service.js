@@ -3,11 +3,11 @@ const { Op, literal } = require("sequelize");
 const { Product, Image } = require("../models");
 const { ApiError } = require("../utils");
 
-const getProductById = async (id) => {
+const getProductById = async (id, user) => {
     const product = await Product.findOne({
         where: { id },
         attributes: {
-            include: [[literal(`(SELECT COUNT(*) FROM ProductUser WHERE productId = product.id)`), "likedUsersCount"]],
+            include: [includeLikedProductAttr(user)],
         },
         include: [
             {
@@ -24,10 +24,33 @@ const getProductById = async (id) => {
     return product;
 };
 
-const paginate = async ({ limit, page, search }) => {
+const getRelatedProducts = async (product) => {
+    const relatedProducts = await Product.findAll({
+        include: {
+            model: Image,
+            as: "images",
+            where: {
+                isThumbnail: true,
+            },
+        },
+        where: {
+            categoryId: product.categoryId,
+            id: {
+                [Op.not]: product.id,
+            },
+        },
+    });
+
+    return relatedProducts;
+};
+
+const index = async (user, { limit, page, search, order }) => {
     const data = await Product.paginate({
         page: page || 1,
         paginate: limit || 10,
+        attributes: {
+            include: [includeLikedProductAttr(user)],
+        },
         where: {
             name: {
                 [Op.like]: `%${(search || "").trim()}%`,
@@ -36,7 +59,11 @@ const paginate = async ({ limit, page, search }) => {
         include: {
             model: Image,
             as: "images",
+            where: {
+                isThumbnail: true,
+            },
         },
+        order,
     });
 
     return data;
@@ -133,10 +160,11 @@ const getTrendingProducts = async (user = null) => {
 
 module.exports = {
     getProductById,
-    paginate,
+    index,
     like,
     unlike,
     getFeatureProducts,
     getLatestProducts,
     getTrendingProducts,
+    getRelatedProducts,
 };

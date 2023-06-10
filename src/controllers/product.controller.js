@@ -4,18 +4,30 @@ const { catchAsync } = require("../utils");
 const show = catchAsync(async (req, res) => {
     const { id } = req.params;
 
-    const data = await productService.getProductById(id);
+    const user = await userService.getUserByRequest(req);
+
+    const product = await productService.getProductById(id, user);
+    const relatedProducts = await productService.getRelatedProducts(product);
 
     return res.json({
-        data,
+        data: product,
+        relatedProducts,
     });
 });
 
 const index = catchAsync(async (req, res) => {
-    const data = await productService.paginate({
+    let order = [];
+    if (req.query.order) {
+        order = req.query.order.split(",").map((clause) => clause.split(":"));
+    }
+
+    const user = await userService.getUserByRequest(req);
+
+    const data = await productService.index(user, {
         limit: Number(req.query.limit),
         page: Number(req.query.page),
         search: req.query.search,
+        order,
     });
 
     return res.json({
