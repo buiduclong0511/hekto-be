@@ -1,3 +1,5 @@
+const tokenService = require("./token.service");
+const { TOKEN_TYPES } = require("../constants");
 const { User } = require("../models");
 
 const createUser = async (data) => {
@@ -18,9 +20,30 @@ const getUserById = async (id) => {
     return await User.findOne({ where: { id } });
 };
 
+const getUserByRequest = async (req) => {
+    const bearerToken = req.get("Authorization");
+
+    if (bearerToken) {
+        const token = bearerToken.split(" ")[1];
+
+        try {
+            const payload = tokenService.decodeToken(token);
+            if (payload.type !== TOKEN_TYPES.ACCESS) {
+                return null;
+            }
+            const user = await getUserById(payload.sub);
+
+            return user;
+        } catch (err) {}
+    }
+
+    return null;
+};
+
 module.exports = {
     createUser,
     checkExistsEmail,
     getUserByEmail,
     getUserById,
+    getUserByRequest,
 };

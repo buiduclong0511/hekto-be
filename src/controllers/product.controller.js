@@ -1,4 +1,4 @@
-const { productService } = require("../services");
+const { productService, userService } = require("../services");
 const { catchAsync } = require("../utils");
 
 const show = catchAsync(async (req, res) => {
@@ -35,8 +35,35 @@ const like = catchAsync(async (req, res) => {
     });
 });
 
+const unlike = catchAsync(async (req, res) => {
+    const { id } = req.params;
+
+    await productService.unlike(id, req.user);
+
+    return res.json({
+        data: true,
+    });
+});
+
+const getCombineProducts = catchAsync(async (req, res) => {
+    const user = await userService.getUserByRequest(req);
+    const featureProducts = await productService.getFeatureProducts(user);
+    const latestProducts = await productService.getLatestProducts(user);
+    const trendingProducts = await productService.getTrendingProducts(user);
+
+    return res.json({
+        data: {
+            featureProducts,
+            latestProducts,
+            trendingProducts,
+        },
+    });
+});
+
 module.exports = {
     show,
     index,
     like,
+    unlike,
+    getCombineProducts,
 };
