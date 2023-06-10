@@ -84,7 +84,7 @@ const unlike = async (productId, user) => {
 const includeLikedProductAttr = (user = null) => {
     return [
         literal(`(EXISTS (SELECT id FROM ProductUser WHERE userId = ${user?.id || 0} AND productId = product.id))`),
-        "liked",
+        "isLiked",
     ];
 };
 
