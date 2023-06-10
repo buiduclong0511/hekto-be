@@ -1,6 +1,6 @@
 "use strict";
 
-const { Category } = require("../../models");
+const Category = require("../../models/category.model");
 
 const images = [
     "\\images\\1685862819484-image1.png",
@@ -50,7 +50,7 @@ function getRandomInt(min, max) {
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    async up(queryInterface, Sequelize) {
+    async up() {
         const categories = await Category.bulkCreate([
             {
                 name: "Đồ gia dụng",
@@ -87,7 +87,7 @@ module.exports = {
         }
     },
 
-    async down(queryInterface, Sequelize) {
+    async down() {
         await Category.destroy({ where: {} });
     },
 };

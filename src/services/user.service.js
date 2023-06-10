@@ -1,6 +1,6 @@
 const tokenService = require("./token.service");
-const { TOKEN_TYPES } = require("../constants");
-const { User } = require("../models");
+const TOKEN_TYPES = require("../constants/token");
+const User = require("../models/user.model");
 
 const createUser = async (data) => {
     const user = await User.create(data);

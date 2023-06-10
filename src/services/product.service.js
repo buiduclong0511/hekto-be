@@ -1,7 +1,8 @@
 const { Op, literal } = require("sequelize");
 
-const { Product, Image } = require("../models");
-const { ApiError } = require("../utils");
+const Product = require("../models/product.model");
+const Image = require("../models/image.model");
+const ApiError = require("../utils/ApiError");
 
 const getProductById = async (id, user) => {
     const product = await Product.findOne({

@@ -1,7 +1,7 @@
 const express = require("express");
 
-const { productController } = require("../controllers");
-const { verifyToken } = require("../middleware");
+const productController = require("../controllers/product.controller");
+const verifyToken = require("../middleware/verifyToken");
 
 const route = express.Router();
 

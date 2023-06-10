@@ -1,5 +1,8 @@
-const { userService, authService, tokenService } = require("../services");
-const { catchAsync, ApiError } = require("../utils");
+const userService = require("../services/user.service");
+const tokenService = require("../services/token.service");
+const authService = require("../services/auth.service");
+const catchAsync = require("../utils/catchAsync");
+const ApiError = require("../utils/ApiError");
 
 const register = catchAsync(async (req, res) => {
     const body = req.body;

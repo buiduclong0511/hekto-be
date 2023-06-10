@@ -1,8 +1,9 @@
 const { TokenExpiredError } = require("jsonwebtoken");
 
-const { ApiError } = require("../utils");
-const { tokenService, userService } = require("../services");
-const { TOKEN_TYPES } = require("../constants");
+const ApiError = require("../utils/ApiError");
+const tokenService = require("../services/token.service");
+const userService = require("../services/user.service");
+const TOKEN_TYPES = require("../constants/token");
 
 const verifyRefreshToken = async (req, res, next) => {
     const bearerToken = req.get("Authorization");

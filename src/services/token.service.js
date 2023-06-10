@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
 const configs = require("../configs");
-const { TOKEN_TYPES } = require("../constants");
-const { BlacklistToken } = require("../models");
+const TOKEN_TYPES = require("../constants/token");
+const BlacklistToken = require("../models/blacklistToken.model");
 
 const decodeToken = (token) => {
     return jwt.verify(token, configs.jwt.secret);

@@ -1,5 +1,6 @@
-const { productService, userService } = require("../services");
-const { catchAsync } = require("../utils");
+const productService = require("../services/product.service");
+const userService = require("../services/user.service");
+const catchAsync = require("../utils/catchAsync");
 
 const show = catchAsync(async (req, res) => {
     const { id } = req.params;
