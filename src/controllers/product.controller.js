@@ -35,6 +35,7 @@ const index = catchAsync(async (req, res) => {
         data: data.docs,
         pages: data.pages,
         total: data.total,
+        currentPage: Number(req.query.page),
     });
 });
 
